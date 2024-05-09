@@ -1,19 +1,14 @@
-function trap(height) {
-  let left = 0;
-  let right = height.length - 1;
-  let leftMax = 0;
-  let rightMax = 0;
-  let waterTrapped = 0;
-  while (left < right) {
-    if (height[left] < height[right]) {
-      if (height[left] >= leftMax) leftMax = height[left];
-      else waterTrapped += leftMax - height[left];
-      left++;
-    } else {
-      if (height[right] >= rightMax) rightMax = height[right];
-      else waterTrapped += rightMax - height[right];
-      right--;
-    }
+function productExceptSelf(nums) {
+  const result = [];
+  let product = 1;
+  for (let i = 0; i < nums.length; i++) {
+    result[i] = product;
+    product *= nums[i];
   }
-  return waterTrapped;
+  product = 1;
+  for (let i = nums.length - 1; i >= 0; i--) {
+    result[i] *= product;
+    product *= nums[i];
+  }
+  return result;
 }
