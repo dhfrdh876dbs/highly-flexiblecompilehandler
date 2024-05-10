@@ -1,14 +1,35 @@
-function productExceptSelf(nums) {
-  const result = [];
-  let product = 1;
-  for (let i = 0; i < nums.length; i++) {
-    result[i] = product;
-    product *= nums[i];
+const cycleSort = (arr) => {
+  for (let start = 0; start < arr.length - 1; start++) {
+    let item = arr[start];
+    let pos = start;
+    for (let i = start + 1; i < arr.length; i++) {
+      if (arr[i] < item) {
+        pos++;
+      }
+    }
+    if (pos === start) {
+      continue;
+    }
+    while (item === arr[pos]) {
+      pos++;
+    }
+    if (pos !== start) {
+      [item, arr[pos]] = [arr[pos], item];
+    }
+    while (pos !== start) {
+      pos = start;
+      for (let i = start + 1; i < arr.length; i++) {
+        if (arr[i] < item) {
+          pos++;
+        }
+      }
+      while (item === arr[pos]) {
+        pos++;
+      }
+      if (item !== arr[pos]) {
+        [item, arr[pos]] = [arr[pos], item];
+      }
+    }
   }
-  product = 1;
-  for (let i = nums.length - 1; i >= 0; i--) {
-    result[i] *= product;
-    product *= nums[i];
-  }
-  return result;
-}
+  return arr;
+};
