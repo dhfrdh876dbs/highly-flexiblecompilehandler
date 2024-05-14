@@ -1,28 +1,38 @@
-function numIslands(grid) {
-  if (grid.length === 0) return 0;
-  let count = 0;
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] === "1") {
-        dfs(grid, i, j);
-        count++;
-      }
+function longestIncreasingPath(matrix) {
+  if (matrix.length === 0) return 0;
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const dp = Array.from(Array(rows), () => Array(cols).fill(0));
+  let longestPath = 0;
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      longestPath = Math.max(longestPath, dfs(matrix, i, j, dp));
     }
   }
-  return count;
-}
-function dfs(grid, i, j) {
-  if (
-    i < 0 ||
-    i >= grid.length ||
-    j < 0 ||
-    j >= grid[0].length ||
-    grid[i][j] === "0"
-  )
-    return;
-  grid[i][j] = "0";
-  dfs(grid, i + 1, j);
-  dfs(grid, i - 1, j);
-  dfs(grid, i, j + 1);
-  dfs(grid, i, j - 1);
+  return longestPath;
+  function dfs(matrix, i, j, dp) {
+    if (dp[i][j] !== 0) return dp[i][j];
+    const dirs = [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+    ];
+    let maxPath = 1;
+    for (const dir of dirs) {
+      const newRow = i + dir[0];
+      const newCol = j + dir[1];
+      if (
+        newRow >= 0 &&
+        newRow < matrix.length &&
+        newCol >= 0 &&
+        newCol < matrix[0].length &&
+        matrix[newRow][newCol] > matrix[i][j]
+      ) {
+        maxPath = Math.max(maxPath, 1 + dfs(matrix, newRow, newCol, dp));
+      }
+    }
+    dp[i][j] = maxPath;
+    return maxPath;
+  }
 }
